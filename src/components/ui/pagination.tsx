@@ -117,7 +117,7 @@ export function Pagination({
             return (
               <Button
                 key={page}
-                variant={currentPage === page ? "primary" : "ghost"}
+                variant={currentPage === page ? "default" : "ghost"}
                 size="sm"
                 onClick={() => onPageChange(page)}
                 className={cn(

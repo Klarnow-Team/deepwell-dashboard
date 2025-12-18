@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum CurrentApp {
+  Wise
+  LemFi
+  WorldRemit
+  Remitly
+  WesternUnionMoneyGram
+  BankTransfer
+  Other
+}
+
+enum SendToCountry {
+  Nigeria
+  Ghana
+  Kenya
+  Jamaica
+  Other
+}
+
+enum Frequency {
+  EveryWeek
+  Every2Weeks
+  EveryMonth
+  FewTimesAYear
+  ItDepends
+}
+
+enum BiggestFrustration {
+  HighFees
+  BadExchangeRates
+  SlowTransfersDelays
+  TooManyAppsAndSteps
+  LackOfTrustHiddenCharges
+  Other
+}
+
+enum InvestingStatus {
+  AlreadyInvestingRegularly
+  StartedLittleNotConsistent
+  WantToStartDontKnowWhere
+  NotInterestedRightNow
+}
+
+enum DesiredFeature {
+  VeryLowOrZeroFees
+  SendAndInvestInOneTap
+  AIGuidanceOnInvesting
+  ClearTrackingOfSendAndInvest
+  LearningContentAboutMoney
+  Other
+}
+
+enum ResearchFollowUp {
+  YesHappyToHelp
+  MaybeSendMoreDetails
+  NoNotRightNow
+}
+
+enum PreferredContactMethod {
+  Email
+  WhatsApp
+}
+
+model Waitlist {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  
+  // Q1: Current app (optional to support existing records)
+  currentApp CurrentApp?
+  
+  // Q1: Other text (only if currentApp = Other)
+  currentAppOther String?
+  
+  // Q2: Corridor/country (optional to support existing records)
+  sendToCountry SendToCountry?
+  
+  // Q2: Other text (only if sendToCountry = Other)
+  sendToCountryOther String?
+  
+  // Q3: Frequency (optional to support existing records)
+  frequency Frequency?
+  
+  // Q4: Biggest frustration (optional to support existing records)
+  biggestFrustration BiggestFrustration?
+  
+  // Q4: Other text (only if biggestFrustration = Other)
+  biggestFrustrationOther String?
+  
+  // Q4: Optional follow-up
+  oneThingToChange String?
+  
+  // Q5: Interest in investing (optional to support existing records)
+  investingStatus InvestingStatus?
+  
+  // Q6: Desired features (optional to support existing records)
+  desiredFeature DesiredFeature?
+  
+  // Q6: Other text (only if desiredFeature = Other)
+  desiredFeatureOther String?
+  
+  // Q6: Optional free text
+  perfectAppDesign String?
+  
+  // Q7: Research follow-up (optional)
+  researchFollowUp ResearchFollowUp?
+  
+  // Q7: Preferred contact method (only if researchFollowUp = Yes or Maybe)
+  preferredContactMethod PreferredContactMethod?
+  
+  // Q7: WhatsApp number (only if preferredContactMethod = WhatsApp)
+  whatsappNumber String?
+  
+  // Existing fields
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tier      Int      @default(3) // 1 = Tier 1 (first 250), 2 = Tier 2 (next 500), 3 = Tier 3
+  inviteCount Int    @default(0)
+  emailSent Boolean  @default(false)
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -13,7 +13,6 @@ export default function DashboardLoading() {
             tier1={0}
             tier2={0}
             tier3={0}
-            researchInterested={0}
             recent24h={0}
             isLoading={true}
           />
